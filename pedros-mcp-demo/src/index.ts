@@ -57,6 +57,11 @@ export class MyMCP extends McpAgent<Env, PedrosState> {
 		orders: {},
 	};
 
+	private supportsUrlElicitation(): boolean {
+		const capabilities = this.server.server.getClientCapabilities();
+		return Boolean(capabilities?.elicitation?.url);
+	}
+
 	private payfastConfig(): PayfastConfig {
 		return {
 			merchantId: this.env.PAYFAST_MERCHANT_ID,
@@ -135,7 +140,8 @@ export class MyMCP extends McpAgent<Env, PedrosState> {
 			"get_menu",
 			{
 				title: "Get Pedro's menu",
-				description: "List available menu items with prices (demo: mocked data, not Pedro's real menu API).",
+				description:
+					"List available menu items with prices (demo: Pedro's real menu items, not a live call to Pedro's menu API).",
 				inputSchema: {},
 			},
 			async () => ({
@@ -146,8 +152,9 @@ export class MyMCP extends McpAgent<Env, PedrosState> {
 							MENU.map((item) => ({
 								id: item.id,
 								name: item.name,
-								description: item.description,
+								category: item.category,
 								price: centsToAmountString(item.priceCents),
+								...(item.isNew ? { new: true } : {}),
 							})),
 							null,
 							2,
@@ -217,7 +224,7 @@ export class MyMCP extends McpAgent<Env, PedrosState> {
 			{
 				title: "Checkout and pay",
 				description:
-					"Create a Payfast payment session for the current cart and wait for payment confirmation. Returns 'confirmed' if Payfast's ITN webhook arrives in time, otherwise 'pending' as a fallback (poll get_order_status afterward).",
+					"Create a Payfast payment session for the current cart and wait for payment confirmation. Returns 'confirmed' if Payfast's ITN webhook arrives in time, otherwise 'pending' as a fallback (poll get_order_status afterward). If the response includes a paymentUrl, the client doesn't support in-chat payment prompts — share that URL with the customer so they can pay directly.",
 				inputSchema: {
 					customerName: z.string().describe("Customer's first name, for the Payfast form"),
 					customerEmail: z.string().email().describe("Customer's email, for the Payfast form and receipt"),
@@ -272,26 +279,28 @@ export class MyMCP extends McpAgent<Env, PedrosState> {
 				const checkoutUrl = `${payfastProcessUrl(this.payfastConfig())}?${new URLSearchParams(formFields).toString()}`;
 
 				let elicitResult: { action: string } | undefined;
-				try {
-					elicitResult = await this.elicitUrl(
-						`Complete payment for order ${orderId} (R${centsToAmountString(totalCents)}) with Pedro's Sandbox checkout.`,
-						checkoutUrl,
-						15_000,
-					);
-				} catch {
-					// timeout — fall through to pending, same as a slow ITN
-				}
+				if (this.supportsUrlElicitation()) {
+					try {
+						elicitResult = await this.elicitUrl(
+							`Complete payment for order ${orderId} (R${centsToAmountString(totalCents)}) with Pedro's Sandbox checkout.`,
+							checkoutUrl,
+							15_000,
+						);
+					} catch {
+						// timeout — fall through to pending, same as a slow ITN
+					}
 
-				if (elicitResult?.action === "decline" || elicitResult?.action === "cancel") {
-					const cancelled: Order = { ...order, status: "cancelled" };
-					this.setState({
-						...this.state,
-						orders: { ...this.state.orders, [orderId]: cancelled },
-					});
-					await doStub.setStatus(orderId, "cancelled");
-					return {
-						content: [{ type: "text", text: JSON.stringify({ orderId, status: "cancelled" }) }],
-					};
+					if (elicitResult?.action === "decline" || elicitResult?.action === "cancel") {
+						const cancelled: Order = { ...order, status: "cancelled" };
+						this.setState({
+							...this.state,
+							orders: { ...this.state.orders, [orderId]: cancelled },
+						});
+						await doStub.setStatus(orderId, "cancelled");
+						return {
+							content: [{ type: "text", text: JSON.stringify({ orderId, status: "cancelled" }) }],
+						};
+					}
 				}
 
 				// Held open pending Payfast's ITN, capped so the tool call doesn't
@@ -319,6 +328,7 @@ export class MyMCP extends McpAgent<Env, PedrosState> {
 								orderId,
 								status: status === "not_found" ? "awaiting_payment" : status,
 								total: centsToAmountString(totalCents),
+								...(elicitResult ? {} : { paymentUrl: checkoutUrl }),
 							}),
 						},
 					],
@@ -413,6 +423,29 @@ async function handleItn(request: Request, env: Env): Promise<Response> {
 	return new Response("OK", { status: 200 });
 }
 
+function htmlPage(title: string, message: string): Response {
+	const body = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>${title}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #f7f4f0; color: #2b2320; }
+  main { text-align: center; padding: 2rem; }
+  h1 { margin-bottom: 0.5rem; }
+</style>
+</head>
+<body>
+<main>
+<h1>${title}</h1>
+<p>${message}</p>
+</main>
+</body>
+</html>`;
+	return new Response(body, { headers: { "content-type": "text/html; charset=utf-8" } });
+}
+
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext) {
 		const url = new URL(request.url);
@@ -423,6 +456,14 @@ export default {
 
 		if (url.pathname === "/webhooks/payfast-itn" && request.method === "POST") {
 			return handleItn(request, env);
+		}
+
+		if (url.pathname === "/payment-complete") {
+			return htmlPage("Thank you!", "Your order is being processed. You can check its status back in Claude.");
+		}
+
+		if (url.pathname === "/payment-cancelled") {
+			return htmlPage("Payment cancelled", "Your payment was cancelled and your order was not placed.");
 		}
 
 		return new Response("Not found", { status: 404 });

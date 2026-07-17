@@ -1,0 +1,127 @@
+{
+  "currency": "ZAR",
+  "specials_promo": [
+    { "name": "Loaded Full Chicken Paella", "price": 159.99 },
+    { "name": "Loaded Quarter Chicken Paella", "price": 59.99 },
+    { "name": "Loaded Chicken Strips Paella", "price": 89.99 },
+    { "name": "Loaded Half Chicken Paella", "price": 89.99 }
+  ],
+  "favourites": [
+    { "name": "1/4 Chicken, Chips & Roll", "price": 49.99 },
+    { "name": "1/2 Chicken Meal", "price": 89.99 },
+    { "name": "Full Chicken Paella", "price": 149.99 },
+    { "name": "Viva Meal", "price": 159.99 },
+    { "name": "Full Meal", "price": 199.99 },
+    { "name": "Double Up", "price": 65.99 },
+    { "name": "Strips & Rice", "price": 29.99 }
+  ],
+  "chicken_only": [
+    { "name": "1/4 Chicken", "price": 32.99 },
+    { "name": "1/2 Chicken", "price": 64.99 },
+    { "name": "Full Chicken", "price": 124.99 },
+    { "name": "4 Wings", "price": 39.99 }
+  ],
+  "chicken_meals": [
+    { "name": "1/4 Chicken Paella", "price": 49.99 },
+    { "name": "1/2 Chicken Paella", "price": 79.99 },
+    { "name": "1/4 Chicken, Pap & Chakalaka", "price": 44.99 },
+    { "name": "1/4 Chicken & Chips", "price": 44.99 },
+    { "name": "4 Flam'n Wings & Chips", "price": 49.99 },
+    { "name": "4 Wings & Chips", "price": 49.99 },
+    { "name": "1/4 Chicken, Chips & Roll", "price": 49.99 },
+    { "name": "1/4 Chicken, Chips & Garlic Roll", "price": 54.99 },
+    { "name": "1/4 Chicken Meal", "price": 59.99 },
+    { "name": "1/2 Chicken & Chips", "price": 79.99 },
+    { "name": "1/2 Chicken Meal", "price": 89.99 },
+    { "name": "1/2 Viva Meal", "price": 84.99 }
+  ],
+  "family_meals": [
+    { "name": "Fiesta Meal", "price": 179.99, "new": true },
+    { "name": "Chicken Strips Paella", "price": 79.99 },
+    { "name": "Full Chicken Paella", "price": 149.99 },
+    { "name": "Full Chicken & 4 Rolls", "price": 139.99 },
+    { "name": "Full Chicken & Large Chips", "price": 149.99 },
+    { "name": "Viva Meal", "price": 159.99 },
+    { "name": "Viva Meal + 4 Garlic Rolls", "price": 169.99 },
+    { "name": "Ola Meal", "price": 169.99 },
+    { "name": "Full Meal", "price": 199.99 },
+    { "name": "Full Meal + 4 Garlic Rolls", "price": 209.99 },
+    { "name": "Mini Combo", "price": 219.99 },
+    { "name": "Maxi Combo", "price": 259.99 },
+    { "name": "Mega Meal", "price": 309.99 }
+  ],
+  "platters": [
+    { "name": "Chicken Platter", "price": 509.99 },
+    { "name": "Kids Platter", "price": 389.99 }
+  ],
+  "burger_meals": [
+    { "name": "Sprinkle Chicken Burger", "price": 29.99 },
+    { "name": "Sprinkle Chicken Burger & Chips", "price": 39.99 },
+    { "name": "Sprinkle Chicken Burger, Chips & 300ml Buddy", "price": 49.99 },
+    { "name": "Chicken Burger", "price": 35.99 },
+    { "name": "Chicken Burger & Chips", "price": 45.99 },
+    { "name": "Chicken Burger, Chips & 300ml Buddy", "price": 54.99 },
+    { "name": "Don Pedro Burger", "price": 35.99 },
+    { "name": "Don Pedro Burger & Chips", "price": 45.99 },
+    { "name": "Don Pedro Burger, Chips & 300ml Buddy", "price": 55.99 },
+    { "name": "Cheese Burger", "price": 39.99 },
+    { "name": "Cheese Burger and Chips", "price": 49.99 },
+    { "name": "Cheese Burger, Chips and 300ml Buddy", "price": 59.99 },
+    { "name": "Double Up", "price": 65.99 },
+    { "name": "Double Up & Chips", "price": 79.99 },
+    { "name": "Double Up, Chips & 300ml Buddy", "price": 89.99 }
+  ],
+  "wraps": [
+    { "name": "Slaw Wrap", "price": 36.99 },
+    { "name": "Slaw Wrap & Chips", "price": 46.99 },
+    { "name": "Slaw Wrap, Chips & 300ml Buddy", "price": 56.99 },
+    { "name": "Chicken Wrap", "price": 39.99 },
+    { "name": "Chicken Wrap & Chips", "price": 49.99 },
+    { "name": "Chicken Wrap, Chips & 300ml Buddy", "price": 59.99 },
+    { "name": "Cheesy Jalapeño Wrap", "price": 46.99 },
+    { "name": "Cheesy Jalapeño Wrap & Chips", "price": 56.99 },
+    { "name": "Cheesy Jalapeño Wrap, Chips & 300ml Buddy", "price": 66.99 },
+    { "name": "Fully Loaded Wrap", "price": 49.99 },
+    { "name": "Fully Loaded Wrap & Chips", "price": 59.99 },
+    { "name": "Fully Loaded Wrap, Chips & 300ml Buddy", "price": 69.99 }
+  ],
+  "single_meals": [
+    { "name": "Cheesy Chicken Fries", "price": 49.99, "new": true },
+    { "name": "Livers & Roll", "price": 29.99 },
+    { "name": "Giblets & Roll", "price": 29.99 },
+    { "name": "Strips & Rice", "price": 29.99 },
+    { "name": "Paella Bowl", "price": 29.99, "new": true },
+    { "name": "Chicken Salad", "price": 39.99 },
+    { "name": "Strips & Chips", "price": 29.99 }
+  ],
+  "kids_meals": [
+    { "name": "Kids Chicken Nuggets Meal", "price": 54.99, "new": true },
+    { "name": "Kids Chicken Bites Meal", "price": 54.99 },
+    { "name": "Kids Burger Meal", "price": 54.99 }
+  ],
+  "sides": [
+    { "name": "Cheesy Fries", "price": 32.99, "new": true },
+    { "name": "Onion Rings", "price": 13.99, "new": true },
+    { "name": "Loaded Fries", "price": 36.99 },
+    { "name": "Garlic Roll", "price": 9.99 },
+    { "name": "Cheesy Garlic Roll", "price": 13.99 },
+    { "name": "Portuguese Roll", "price": 5.99 },
+    { "name": "Regular Chips", "price": 17.99 },
+    { "name": "Regular Rice", "price": 17.99 },
+    { "name": "Large Chips", "price": 27.99 },
+    { "name": "Large Rice", "price": 27.99 },
+    { "name": "Regular Wedges", "price": 17.99 },
+    { "name": "Large Wedges", "price": 27.99 },
+    { "name": "Pap & Chakalaka", "price": 19.99 },
+    { "name": "Coleslaw Salad", "price": 17.99 },
+    { "name": "Garden Salad", "price": 27.99 },
+    { "name": "Greek Salad", "price": 34.99 },
+    { "name": "Dips", "price": 4.99 }
+  ],
+  "snacks": [
+    { "name": "5 Chicken Nuggets & Dip", "price": 29.99, "new": true },
+    { "name": "10 Chicken Nuggets & Dip", "price": 49.99, "new": true },
+    { "name": "12 Chicken Bites & Dip", "price": 29.99, "new": true },
+    { "name": "3 Jalapeño Rissoles", "price": 34.99 }
+  ]
+}
