@@ -2,8 +2,11 @@
 // Field order and encoding verified against the official PHP SDK
 // (github.com/PayFast/payfast-php-sdk, lib/Auth.php + lib/PaymentIntegrations/Notification.php).
 
-// Fixed field order for the outbound checkout signature — Payfast recomputes
-// over this exact order server-side, not whatever order we send fields in.
+// Field order for the outbound checkout signature. The PHP SDK's own
+// generateSignature() actually signs over array_filter()'s output, which
+// preserves *caller insertion order* rather than reordering to this list —
+// this fixed order only matches because CheckoutFields' key order below
+// happens to agree with it. Keep the two in sync if CheckoutFields changes.
 const CHECKOUT_SIGNATURE_FIELD_ORDER = [
 	"merchant_id",
 	"merchant_key",
@@ -49,7 +52,7 @@ function payfastValidateUrl(config: PayfastConfig): string {
 function phpUrlEncode(value: string): string {
 	return encodeURIComponent(value)
 		.replace(/%20/g, "+")
-		.replace(/[!'()*]/g, (c) => "%" + c.charCodeAt(0).toString(16).toUpperCase());
+		.replace(/[!'()*~]/g, (c) => "%" + c.charCodeAt(0).toString(16).toUpperCase());
 }
 
 async function md5Hex(input: string): Promise<string> {
